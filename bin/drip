@@ -68,7 +68,6 @@ function parse_args {
         if [ -z $main_class ]; then
             if $classpath; then
                 classpath=false
-                arg=$DRIP_JAR:$arg
             else
                 if [ "$arg" == "-cp" ] || [ "$arg" == "-classpath" ]; then
                     classpath=true
@@ -106,7 +105,7 @@ function launch_jvm {
         mkfifo $dir/out
         mkfifo $dir/err
 
-        java ${jvm_args[*]} org.flatland.drip.Main $main_class $dir &
+        java ${jvm_args[*]} -Xbootclasspath/a:$DRIP_JAR org.flatland.drip.Main $main_class $dir &
         echo $! > $dir/jvm.pid
     fi
 }
